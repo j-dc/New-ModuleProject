@@ -18,10 +18,10 @@ Copyright (c) 2021 ScriptingChris
 module project build
 
 .LICENSEURI 
-https://scriptingchris.tech/new-moduleproject_ps1/
+https://scriptingchris.tech/posts/how-to-get-started-developing-a-powershell-module/
 
 .PROJECTURI
-https://github.com/ScriptingChris/New-ModuleProject
+https://github.com/hoejsagerc/New-ModuleProject
 
 .ICONURI
 
@@ -39,9 +39,6 @@ https://github.com/ScriptingChris/New-ModuleProject
 Created a lot of bug fixes to the build.ps1 script.
 Added the the process of exporting aliases from the public functions aswell
 
-
-Help documentation and use cases for the Script can be found here:
-https://scriptingchris.tech/new-moduleproject_ps1/
 #>
 
 <# 
@@ -51,7 +48,7 @@ Script for easily creating a new module projects folder
 Script which quickly creates a folder structure, Module Manifest and downloads a build.ps1 script
 to use with Invoke-Build module for easy developing, maintaining, building and publishing your
 powershell module.
-Follow project at: https://github.com/ScriptingChris/New-ModuleProject
+Follow project at: https://github.com/hoejsagerc/New-ModuleProject/
 For in-depth help: https://scriptingchris.tech/new-moduleproject_ps1/
 .EXAMPLE
 PS C:\> New-ModuleProject.ps1 -Path ".\" -ModuleName "MyTestModule" -Prerequisites -Initialize -Scripts
@@ -77,7 +74,7 @@ It will then make sure you have to follwoing modules installed:
 - InvokeBuild (For building the module)
 
 It will then download the build.ps1 script from the GitHub repository
-https://raw.githubusercontent.com/ScriptingChris/New-ModuleProject/main/Source/build.ps1
+https://raw.githubusercontent.com/hoejsagerc/New-ModuleProject/main/Source/build.ps1
 
 The build script will be used for testing, building and publishing the module.
 Help to use the build script can be found here: https://scriptingchris.tech/new-moduleproject_ps1/
@@ -95,7 +92,7 @@ Parameter which will tricker installing of several modules:
 Parameter which will tricker the creation of the Module folder structure.
 .PARAMETER Scripts
 Parameter which will tricker the download of the default build script from:
-https://raw.githubusercontent.com/ScriptingChris/New-ModuleProject/main/Source/build.ps1
+https://raw.githubusercontent.com/hoejsagerc/New-ModuleProject/main/Source/build.ps1
 .INPUTS
 N/A
 .OUTPUTS
@@ -189,14 +186,14 @@ if($Scripts.IsPresent){
         New-ModuleManifest -Path "$($Path)\$($ModuleName)\Source\$($ModuleName).psd1" -ModuleVersion "0.0.1"
     }
 
-    Write-Verbose -Message "Downloading build script from: https://raw.githubusercontent.com/ScriptingChris/New-ModuleProject/main/Source/build.ps1"
-    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/ScriptingChris/New-ModuleProject/main/Source/build.ps1" -OutFile "$($Path)\$($ModuleName)\build.ps1"
+    Write-Verbose -Message "Downloading build script from: https://raw.githubusercontent.com/hoejsagerc/New-ModuleProject/main/Source/build.ps1"
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/hoejsagerc/New-ModuleProject/main/Source/build.ps1" -OutFile "$($Path)\$($ModuleName)\build.ps1"
 
     if(Test-Path "$($Path)\$($ModuleName)\build.ps1"){
         Write-Verbose -Message "Build script was downloaded successfully"
     }
     else {
-        throw "Failed to downlaod the buildscript from: https://raw.githubusercontent.com/ScriptingChris/New-ModuleProject/main/Source/build.ps1"
+        throw "Failed to downlaod the buildscript from: https://raw.githubusercontent.com/hoejsagerc/New-ModuleProject/main/Source/build.ps1"
     }
 }
 #EndRegion - Scripts
