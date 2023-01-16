@@ -38,7 +38,7 @@ task Test {
         Invoke-ScriptAnalyzer ".\Source\Private" -Recurse
     }
     catch {
-        throw "Couldn't run Script Analyzer"
+        throw "Couldn't run Script Analyzer`n --> InnerException: $_.Message"
     }
 
     Write-Verbose -Message "Running Pester Tests"
@@ -77,7 +77,7 @@ task DebugBuild -if ($Configuration -eq "debug") {
         New-Item -Path ".\Output\temp\$($ModuleName)\$($ModuleVersion)" -ItemType Directory
     }
     catch {
-        throw "Failed creating the new temp module folder: .\Output\temp\$($ModuleName)\$($ModuleVersion)"
+        throw "Failed creating the new temp module folder: .\Output\temp\$($ModuleName)\$($ModuleVersion)`n --> InnerException: $_.Message"
     }
 
     Write-Verbose -Message "Generating the Module Manifest for temp build and generating new Module File"
@@ -86,7 +86,7 @@ task DebugBuild -if ($Configuration -eq "debug") {
         New-Item -Path ".\Output\temp\$($ModuleName)\$ModuleVersion\$($ModuleName).psm1" -ItemType File
     }
     catch {
-        throw "Failed copying Module Manifest from: .\Source\$($ModuleName).psd1 to .\Output\temp\$($ModuleName)\$ModuleVersion\ or Generating the new psm file."
+        throw "Failed copying Module Manifest from: .\Source\$($ModuleName).psd1 to .\Output\temp\$($ModuleName)\$ModuleVersion\ or Generating the new psm file.`n --> InnerException: $_.Message"
     }
 
     Write-Verbose -Message "Updating Module Manifest with Public Functions"
@@ -104,7 +104,7 @@ task DebugBuild -if ($Configuration -eq "debug") {
     catch {
         throw "Failed updating Module manifest with public functions"
     }
-    $ModuleFile = ".\Output\temp\$($ModuleName)\$($ModuleVersion)\$($ModuleName).psm1"
+    $ModuleFile = ".\Output\temp\$($ModuleName)\$($ModuleVersion)\$($ModuleName).psm1`n --> InnerException: $_.Message"
     Write-Verbose -Message "Building the .psm1 file"
     Write-Verbose -Message "Appending Public Functions"
     Add-Content -Path $ModuleFile -Value "### --- PUBLIC FUNCTIONS --- ###"
@@ -137,7 +137,7 @@ task DebugBuild -if ($Configuration -eq "debug") {
             Add-Content -Path $ModuleFile -Value "#EndRegion - $function"            
         }
         catch {
-            throw "Failed adding content to .psm1 for function: $($function)"
+            throw "Failed adding content to .psm1 for function: $($function)`n --> InnerException: $_.Message"
         }
     }
 
@@ -152,7 +152,7 @@ task DebugBuild -if ($Configuration -eq "debug") {
             Add-Content -Path $ModuleFile -Value "#EndRegion - $function"            
         }
         catch {
-            throw "Failed adding content to .psm1 for function: $($function)"
+            throw "Failed adding content to .psm1 for function: $($function)`n --> InnerException: $_.Message"
         }
     }
 }
@@ -197,7 +197,7 @@ task Build -if($Configuration -eq "Release"){
         New-Item -Path ".\Output\$($ModuleName)\$($ModuleVersion)" -ItemType Directory
     }
     catch {
-        throw "Failed creating the new temp module folder: .\Output\$($ModuleName)\$($ModuleVersion)"
+        throw "Failed creating the new temp module folder: .\Output\$($ModuleName)\$($ModuleVersion)`n --> InnerException: $_.Message"
     }
 
     Write-Verbose -Message "Generating the Module Manifest for temp build and generating new Module File"
@@ -206,7 +206,7 @@ task Build -if($Configuration -eq "Release"){
         New-Item -Path ".\Output\$($ModuleName)\$ModuleVersion\$($ModuleName).psm1" -ItemType File
     }
     catch {
-        throw "Failed copying Module Manifest from: .\Source\$($ModuleName).psd1 to .\Output\$($ModuleName)\$ModuleVersion\ or Generating the new psm file."
+        throw "Failed copying Module Manifest from: .\Source\$($ModuleName).psd1 to .\Output\$($ModuleName)\$ModuleVersion\ or Generating the new psm file.`n --> InnerException: $_.Message"
     }
 
     Write-Verbose -Message "Updating Module Manifest with Public Functions"
@@ -220,7 +220,7 @@ task Build -if($Configuration -eq "Release"){
         Update-ModuleManifest -Path ".\Output\$($ModuleName)\$($ModuleVersion)\$($ModuleName).psd1" -FunctionsToExport $functionsToExport
     }
     catch {
-        throw "Failed updating Module manifest with public functions"
+        throw "Failed updating Module manifest with public functions`n --> InnerException: $_.Message"
     }
     $ModuleFile = ".\Output\$($ModuleName)\$($ModuleVersion)\$($ModuleName).psm1"
     Write-Verbose -Message "Building the .psm1 file"
@@ -255,7 +255,7 @@ task Build -if($Configuration -eq "Release"){
             Add-Content -Path $ModuleFile -Value "#EndRegion - $function"            
         }
         catch {
-            throw "Failed adding content to .psm1 for function: $($function)"
+            throw "Failed adding content to .psm1 for function: $($function)`n --> InnerException: $_.Message"
         }
     }
 
@@ -270,7 +270,7 @@ task Build -if($Configuration -eq "Release"){
             Add-Content -Path $ModuleFile -Value "#EndRegion - $function"            
         }
         catch {
-            throw "Failed adding content to .psm1 for function: $($function)"
+            throw "Failed adding content to .psm1 for function: $($function)`n --> InnerException: $_.Message"
         }
     }
 
@@ -280,7 +280,7 @@ task Build -if($Configuration -eq "Release"){
         Update-ModuleManifest -Path ".\Output\$($ModuleName)\$($ModuleVersion)\$($ModuleName).psd1" -RootModule "$($ModuleName).psm1"
     }
     catch {
-        Write-Warning -Message "Failed appinding the rootmodule to the Module Manifest"
+        Write-Warning -Message "Failed appinding the rootmodule to the Module Manifest`n --> InnerException: $_.Message"
     }
 
     Write-Verbose -Message "Compiling Help files"
@@ -290,7 +290,7 @@ task Build -if($Configuration -eq "Release"){
         Import-Module ".\Output\$($ModuleName)\$ModuleVersion\$($ModuleName).psm1"
     }
     catch {
-        throw "Failed importing the module: $($ModuleName)"
+        throw "Failed importing the module: $($ModuleName)`n --> InnerException: $_.Message"
     }
 
     if(!(Get-ChildItem -Path ".\Docs")){
@@ -302,7 +302,7 @@ task Build -if($Configuration -eq "Release"){
             New-ExternalHelp ".\Docs" -OutputPath ".\Output\$($ModuleName)\$($ModuleVersion)\en-US\"
         }
         else {
-            throw "Module is not imported, cannot generate help files"
+            throw "Module is not imported, cannot generate help files`n --> InnerException: $_.Message"
         }
     }
     else {
@@ -337,7 +337,7 @@ task Publish -if($Configuration -eq "Release"){
             Publish-Module -Name $ModuleName -NuGetApiKey $NugetAPIKey
         }
         catch {
-            throw "Failed publishing module to PowerShell Gallery"
+            throw "Failed publishing module to PowerShell Gallery`n --> InnerException: $_.Message"
         }
     }
     else {
